@@ -1,10 +1,10 @@
 let xp = 0;
 let health = 100;
 let gold = 50;
-let currentWeaponIndex = 0;
+let currentWeaponIndex = 0; // Индекс текущего оружия
 let fighting;
 let monsterHealth;
-let inventory = ["stick"];
+let inventory = ['палка'];
 
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector("#button2");
@@ -85,13 +85,21 @@ function buyHealth() {
   }
 }
 function buyWeapon() {
-  if (gold >= 30) {
-    gold -= 30;
-    currentWeaponIndex++;
-    goldText.innerText = gold;
-    let newWeapon = weapons[currentWeaponIndex].name;
-    text.innerText = "Теперь у вас есть " + newWeapon + ".";
-  }
+ if (currentWeaponIndex < weapons.length) {
+   if (gold >= 30) {
+     gold -= 30;
+     currentWeaponIndex++;
+     goldText.innerText = gold;
+     let newWeapon = weapons[currentWeaponIndex].name;
+     text.innerText = "Теперь у вас есть " + newWeapon + ".";
+     inventory.push(newWeapon)
+     text.innerText += " В вашем инвентаре есть: " + inventory;
+   } else {
+     text.innerText = "У вас недостаточно золота для покупки оружия."
+   }
+ } else {
+   text.innerText = "У вас уже есть самое мощное оружие!"
+ }
 }
 
 function fightSlime() {
