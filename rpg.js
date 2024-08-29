@@ -99,7 +99,21 @@ function buyWeapon() {
    }
  } else {
    text.innerText = "У вас уже есть самое мощное оружие!"
+   button2.innerText = "Продать оружие за 15 золотых";
+   button2.onclick = sellWeapon
  }
+}
+
+function sellWeapon() {
+  if (inventory.length > 1) {
+    gold += 15;
+    goldText.innerText = gold;
+    let currentWeapon = inventory.shift();
+    text.innerText = "Вы продали " + currentWeapon + ".";
+    text.innerText += " В вашем инвентаре есть: " + inventory;
+  } else {
+    text.innerText = "Не продавайте свое единственное оружие!";
+  }
 }
 
 function fightSlime() {
