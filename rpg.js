@@ -22,6 +22,23 @@ const weapons = [
   { name: 'молоток-гвоздодер', power: 50 },
   { name: 'меч', power: 100 }
 ];
+
+const monsters = [
+  {
+    name: "слизь",
+    level: 2,
+    health: 15,
+  },{
+    name: "клыкастый зверь",
+    level: 8,
+    health: 60,
+  },{
+    name: "дракон",
+    level: 20,
+    health: 300,
+  },
+]
+
 const locations = [
   {
     name: "городская площадь",
@@ -40,6 +57,12 @@ const locations = [
     "button text": ["Биться со слизнями", "Сразиться с клыкастым зверем", "Идти на городскую площадь"],
     "button functions": [fightSlime, fightBeast, goTown],
     text: "\"Ты входишь в пещеру. Ты видишь каких-то монстров\"."
+  },
+  {
+    name: "сражаться",
+    "button text": ["Атакой", "Уклонением", "Бегом"],
+    "button functions": [attack, dodge, goTown],
+    text: "Вы сражаетесь с монстром"
   }
 ];
 
@@ -117,9 +140,32 @@ function sellWeapon() {
 }
 
 function fightSlime() {
-
+  fighting = 0;
+  goFight()
 }
 
 function fightBeast() {
+  fighting = 1;
+  goFight();
+}
+
+function fightDragon() {
+  fighting = 2;
+  goFight();
+}
+
+function goFight() {
+  update(locations[3])
+  monsterHealth = monsters[fighting].health
+  const monsterStats = document.querySelector('monsterStats');
+  monsterStats.style.display = 'block';
+
+}
+
+function attack() {
+
+}
+
+function dodge() {
 
 }
