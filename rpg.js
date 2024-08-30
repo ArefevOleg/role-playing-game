@@ -74,7 +74,7 @@ const locations = [
     name: "потерять",
     "button text": ["ВОСПРОИЗВЕСТИ?", "ВОСПРОИЗВЕСТИ?", "ВОСПРОИЗВЕСТИ?"],
     "button functions": [restart, restart, restart],
-    text: "Ты умрешь. &#x2620;"
+    text: "Ох, ты сдох. &#x2620;"
   },
   {
     name: "победа",
@@ -119,7 +119,8 @@ function goCave() {
 }
 
 function fightDragon() {
-  console.log("Fighting dragon.");
+  fighting = 2;
+  goFight();
 }
 
 function buyHealth() {
