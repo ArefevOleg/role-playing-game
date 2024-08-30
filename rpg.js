@@ -75,6 +75,12 @@ const locations = [
     "button text": ["ВОСПРОИЗВЕСТИ?", "ВОСПРОИЗВЕСТИ?", "ВОСПРОИЗВЕСТИ?"],
     "button functions": [restart, restart, restart],
     text: "Ты умрешь. &#x2620;"
+  },
+  {
+    name: "победа",
+    "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
+    "button functions": [restart, restart, restart],
+    text: "Вы победили дракона! ВЫ ПРОШЛИ ИГРУ! &#x1F389;"
   }
 ];
 
@@ -91,7 +97,7 @@ function update(location) {
   button1.onclick = location["button functions"][0];
   button2.onclick = location["button functions"][1];
   button3.onclick = location["button functions"][2];
-  text.innerText = location.text;
+  text.innerHTML = location.text;
 }
 
 function goTown() {
@@ -179,15 +185,26 @@ function goFight() {
 function attack() {
   text.innerText = monsters[fighting].name + " атакует. "
   text.innerText += " Вы атакуете его своим " + weapons[currentWeaponIndex].name + ".";
-  monsterHealth = health -= monsters[fighting].level;
-  monsterHealth -= weapons[currentWeaponIndex].power + Math.floor(Math.random() * xp) + 1;
+  health -= getMonsterAttackValue(monsters[fighting].level);
   healthText.innerText = health;
   monsterHealthText.innerText = monsterHealth;
-  if (health <= 0) {
-    lose()
-  } else if (monsterHealth <= 0) {
-    defeatMonster()
+  if (isMonsterHit()) {
+    monsterHealth -= weapons[currentWeaponIndex].power + Math.floor(Math.random() * xp) + 1;
   }
+  if (health <= 0) {
+    lose();
+  } else if (monsterHealth <= 0) {
+    if (fighting === 2) {
+      winGame()
+    } else {
+      defeatMonster();
+    }
+  }
+}
+
+function getMonsterAttackValue(level) {
+  const hit = (level * 5) - (Math.floor(Math.random() * xp));
+  return hit > 0 ? hit : 0;
 }
 
 function dodge() {
@@ -204,6 +221,10 @@ function defeatMonster() {
 
 function lose() {
   update(locations[5])
+}
+
+function winGame() {
+  update(locations[6]);
 }
 
 function restart() {
