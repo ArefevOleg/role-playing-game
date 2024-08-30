@@ -190,6 +190,8 @@ function attack() {
   monsterHealthText.innerText = monsterHealth;
   if (isMonsterHit()) {
     monsterHealth -= weapons[currentWeaponIndex].power + Math.floor(Math.random() * xp) + 1;
+  } else {
+    text.innerText += " Вы пропустили"
   }
   if (health <= 0) {
     lose();
@@ -199,6 +201,10 @@ function attack() {
     } else {
       defeatMonster();
     }
+  }
+  if (Math.random() <= .1 && inventory.length !== 1) {
+    text.innerText += " Ваше " + inventory.pop() + " ломается.";
+    currentWeaponIndex --
   }
 }
 
@@ -237,4 +243,8 @@ function restart() {
   healthText.innerText = health;
   xpText.innerText = xp;
   goTown()
+}
+
+function isMonsterHit() {
+  return Math.random() > .2 || health < 20
 }
