@@ -67,7 +67,7 @@ const locations = [
   {
     name: "убить монстра",
     "button text": ["Перейти на городскую площадь", "Перейти на городскую площадь", "Перейти на городскую площадь"],
-    "button functions": [goTown, goTown, goTown],
+    "button functions": [goTown, goTown, easterEgg],
     text: 'Монстр кричит "Arg!" умирая. Вы получаете очки опыта и находите золото'
   },
   {
@@ -81,6 +81,12 @@ const locations = [
     "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
     "button functions": [restart, restart, restart],
     text: "Вы победили дракона! ВЫ ПРОШЛИ ИГРУ! &#x1F389;"
+  },
+  {
+    name: "пасхальное яйцо",
+    "button text": ["2", "8", "Пойти на городскую площадь?"],
+    "button functions": [pickTwo, pickEight, goTown],
+    text: "Вы нашли тайнй уровень. Выберите число, указанное выше.Случайным образом будут выбраны десять чисел в диапазоне от 0 до 10. Если выбранное вами число совпадает с одним из случайных чисел, вы выигрываете!"
   }
 ];
 
@@ -243,6 +249,41 @@ function restart() {
   healthText.innerText = health;
   xpText.innerText = xp;
   goTown()
+}
+
+function easterEgg () {
+  update(locations[7])
+}
+
+function pick(guess) {
+  const numbers = [];
+  while (numbers.length < 10) {
+    numbers.push(Math.floor(Math.random() * 11))
+  }
+  text.innerText = "Вы выбрали " + guess + ". Вот случайные числа:\n";
+  for (let i = 0; i < 10; i++) {
+    text.innerText += numbers[i] + "\n"
+  }
+  if (numbers.includes(guess)) {
+    text.innerText += "Правильно! Вы выигрываете 20 золотых!";
+    gold += 20
+    goldText.innerText = gold
+  } else {
+    text.innerText += "Неправильно! Вы теряете 10 единиц здоровья!";
+    health -= 10;
+    healthText.innerText = health;
+    if (health <= 0) {
+      lose()
+    }
+  }
+}
+
+function pickTwo() {
+  pick(2);
+}
+
+function pickEight() {
+  pick(8);
 }
 
 function isMonsterHit() {
