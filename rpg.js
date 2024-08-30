@@ -25,15 +25,15 @@ const weapons = [
 
 const monsters = [
   {
-    name: "слизь",
+    name: " слизь ",
     level: 2,
     health: 15,
   },{
-    name: "клыкастый зверь",
+    name: " клыкастый зверь ",
     level: 8,
     health: 60,
   },{
-    name: "дракон",
+    name: " дракон ",
     level: 20,
     health: 300,
   },
@@ -63,6 +63,18 @@ const locations = [
     "button text": ["Атакой", "Уклонением", "Бегом"],
     "button functions": [attack, dodge, goTown],
     text: "Вы сражаетесь с монстром"
+  },
+  {
+    name: "убить монстра",
+    "button text": ["Перейти на городскую площадь", "Перейти на городскую площадь", "Перейти на городскую площадь"],
+    "button functions": [goTown, goTown, goTown],
+    text: 'Монстр кричит "Arg!" умирая. Вы получаете очки опыта и находите золото'
+  },
+  {
+    name: "потерять",
+    "button text": ["ВОСПРОИЗВЕСТИ?", "ВОСПРОИЗВЕСТИ?", "ВОСПРОИЗВЕСТИ?"],
+    "button functions": [restart, restart, restart],
+    text: "Ты умрешь. &#x2620;"
   }
 ];
 
@@ -72,6 +84,7 @@ button2.onclick = goCave;
 button3.onclick = fightDragon;
 
 function update(location) {
+  monsterStats.style.display = "none"
   button1.innerText = location["button text"][0];
   button2.innerText = location["button text"][1];
   button3.innerText = location["button text"][2];
@@ -121,8 +134,8 @@ function buyWeapon() {
      text.innerText = "У вас недостаточно золота для покупки оружия."
    }
  } else {
-   text.innerText = "У вас уже есть самое мощное оружие!"
-   button2.innerText = "Продать оружие за 15 золотых";
+   text.innerText = " У вас уже есть самое мощное оружие! "
+   button2.innerText = " Продать оружие за 15 золотых ";
    button2.onclick = sellWeapon
  }
 }
@@ -132,10 +145,10 @@ function sellWeapon() {
     gold += 15;
     goldText.innerText = gold;
     let currentWeapon = inventory.shift();
-    text.innerText = "Вы продали " + currentWeapon + ".";
+    text.innerText = " Вы продали " + currentWeapon + ".";
     text.innerText += " В вашем инвентаре есть: " + inventory;
   } else {
-    text.innerText = "Не продавайте свое единственное оружие!";
+    text.innerText = " Не продавайте свое единственное оружие! ";
   }
 }
 
@@ -164,9 +177,43 @@ function goFight() {
 }
 
 function attack() {
-
+  text.innerText = monsters[fighting].name + " атакует. "
+  text.innerText += " Вы атакуете его своим " + weapons[currentWeaponIndex].name + ".";
+  monsterHealth = health -= monsters[fighting].level;
+  monsterHealth -= weapons[currentWeaponIndex].power + Math.floor(Math.random() * xp) + 1;
+  healthText.innerText = health;
+  monsterHealthText.innerText = monsterHealth;
+  if (health <= 0) {
+    lose()
+  } else if (monsterHealth <= 0) {
+    defeatMonster()
+  }
 }
 
 function dodge() {
+  text.innerText = "Вы уклоняетесь от атаки " + monsters[fighting].name;
+}
 
+function defeatMonster() {
+  gold = gold += Math.floor(monsters[fighting].level * 6.7)
+  xp = xp += monsters[fighting].level;
+  goldText.innerText = gold
+  xpText.innerText = xp
+  update(locations[4])
+}
+
+function lose() {
+  update(locations[5])
+}
+
+function restart() {
+  currentWeaponIndex = 0
+  inventory = ["stick"]
+  xp = 0;
+  health = 100;
+  gold = 50;
+  goldText.innerText = gold;
+  healthText.innerText = health;
+  xpText.innerText = xp;
+  goTown()
 }
