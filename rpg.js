@@ -1,10 +1,10 @@
 let xp = 0;
-let health = 100;
-let gold = 50;
+let health = 100; // здоровье
+let gold = 50; // золото
 let currentWeaponIndex = 0; // Индекс текущего оружия
-let fighting;
-let monsterHealth;
-let inventory = ['палка'];
+let fighting; // боевые действия
+let monsterHealth; // здоровье монстров
+let inventory = ['палка']; // инвентарь
 
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector("#button2");
@@ -159,7 +159,8 @@ function goFight() {
   monsterHealth = monsters[fighting].health
   const monsterStats = document.querySelector('monsterStats');
   monsterStats.style.display = 'block';
-
+  monsterName.innerText = monsters[fighting].name;
+  monsterHealthText.innerText = monsterHealth;
 }
 
 function attack() {
